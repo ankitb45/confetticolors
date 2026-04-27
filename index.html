@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confetti Colors · Art Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --warm-white: #faf7f2;
+      --terracotta: #c17f5a;
+      --clay: #a0603c;
+      --ochre: #d4a055;
+      --sage: #8a9e8a;
+      --deep-brown: #3d2b1f;
+      --bark: #6b4c34;
+      --sand: #e8dcc8;
+      --muted-green: #6b7c5e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--deep-brown);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      background: rgba(245, 240, 232, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(161,96,60,0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--deep-brown);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--terracotta); font-style: italic; }
+
+    nav ul {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    nav ul a {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bark);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    nav ul a:hover { color: var(--terracotta); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+      overflow: hidden;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 4rem 6rem 5rem;
+      position: relative;
+    }
+
+    .hero-text::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      left: -60px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(212,160,85,0.18) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      color: var(--deep-brown);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--bark);
+      max-width: 380px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--deep-brown);
+      text-decoration: none;
+      border-bottom: 1px solid var(--terracotta);
+      padding-bottom: 0.3rem;
+      transition: color 0.3s, gap 0.3s;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.8s;
+    }
+
+    .hero-cta:hover { color: var(--terracotta); gap: 1.2rem; }
+
+    .hero-image-panel {
+      position: relative;
+      overflow: hidden;
+      background: var(--sand);
+    }
+
+    .hero-image-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards 0.5s;
+    }
+
+    .hero-image-panel .paint-swatch {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 2rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.6);
+    }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 6rem 5rem; }
+
+    .section-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--deep-brown);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      background: var(--warm-white);
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .about-image {
+      position: relative;
+    }
+
+    .about-image img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      display: block;
+    }
+
+    .about-image::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: -18px;
+      right: 18px;
+      bottom: 18px;
+      border: 1.5px solid var(--ochre);
+      z-index: 0;
+    }
+
+    .about-image img { position: relative; z-index: 1; }
+
+    .about-text p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--bark);
+      margin-bottom: 1.2rem;
+    }
+
+    .instagram-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.3rem;
+      background: var(--sand);
+      border-radius: 2px;
+      font-size: 0.8rem;
+      color: var(--deep-brown);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: background 0.3s;
+    }
+
+    .instagram-badge:hover { background: var(--terracotta); color: white; }
+
+    .instagram-badge svg { width: 18px; height: 18px; }
+
+    /* ── GALLERY ── */
+    .gallery { background: var(--cream); }
+
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 1.2rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--sand);
+    }
+
+    .gallery-item:nth-child(1) { grid-row: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(61,43,31,0.7) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+    }
+
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+
+    .gallery-item-overlay span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: white;
+      font-style: italic;
+    }
+
+    /* ── PALETTE STRIP ── */
+    .palette-strip {
+      padding: 3rem 5rem;
+      background: var(--deep-brown);
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .palette-strip p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--cream);
+      flex: 1;
+      line-height: 1.6;
+    }
+
+    .palette-colors {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .palette-dot {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+    }
+
+    /* ── PROCESS ── */
+    .process { background: var(--warm-white); }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .process-step { position: relative; }
+
+    .step-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      color: var(--sand);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--deep-brown);
+      margin-bottom: 0.8rem;
+    }
+
+    .step-desc {
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: var(--bark);
+    }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: var(--sand);
+      text-align: center;
+      padding: 7rem 5rem;
+    }
+
+    .contact .section-label { text-align: center; }
+    .contact .section-title { text-align: center; margin: 0 auto 1.5rem; max-width: 500px; }
+
+    .contact p {
+      font-size: 1rem;
+      color: var(--bark);
+      line-height: 1.8;
+      max-width: 440px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      background: var(--warm-white);
+      border: 1px solid rgba(161,96,60,0.25);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      color: var(--deep-brown);
+      outline: none;
+      transition: border-color 0.3s;
+      border-radius: 1px;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--terracotta); }
+
+    .contact-form textarea { resize: vertical; min-height: 130px; }
+
+    .btn-send {
+      padding: 1rem 2.5rem;
+      background: var(--terracotta);
+      color: white;
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-send:hover { background: var(--clay); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep-brown);
+      color: rgba(245,240,232,0.6);
+      padding: 2rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+    }
+
+    footer a {
+      color: var(--ochre);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--cream); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30,18,10,0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox img {
+      max-width: 85vw;
+      max-height: 85vh;
+      object-fit: contain;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 2rem; right: 2.5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 1.5rem;
+      color: var(--cream);
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox-close:hover { opacity: 1; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-image-panel { min-height: 55vw; }
+      .hero-text { padding: 4rem 2rem; }
+      .about { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+      .gallery { padding: 4rem 2rem; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:nth-child(1) { grid-row: span 1; }
+      .gallery-item:nth-child(4) { grid-column: span 1; }
+      .process { padding: 4rem 2rem; }
+      .process-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .palette-strip { padding: 2.5rem 2rem; flex-direction: column; }
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.5rem; }
+      section { padding: 4rem 2rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Confetti <span>Colors</span></a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Acrylic Paintings · Self-Taught Artist</p>
+    <h1 class="hero-title">Where <em>colour</em><br>finds its <em>soul</em></h1>
+    <p class="hero-desc">
+      Hand-painted originals rooted in warmth, texture, and the quiet joy of making. Each canvas is a conversation between pigment and intuition.
+    </p>
+    <a href="#gallery" class="hero-cta">Explore the work →</a>
+  </div>
+  <div class="hero-image-panel">
+    <!-- Replace src with your featured painting image -->
+    <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&q=80" alt="Featured Painting" />
+    <div class="paint-swatch">
+      <div class="swatch" style="background:#c17f5a"></div>
+      <div class="swatch" style="background:#d4a055"></div>
+      <div class="swatch" style="background:#8a9e8a"></div>
+      <div class="swatch" style="background:#3d2b1f"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-image">
+    <!-- Replace src with your photo or a studio shot -->
+    <img src="https://images.unsplash.com/photo-1582201943403-5d94f490e2cc?w=700&q=80" alt="Artist at work" />
+  </div>
+  <div class="about-text">
+    <p class="section-label">About the Artist</p>
+    <h2 class="section-title">Colour as a<br><em>language</em></h2>
+    <p>
+      Hello! I'm the artist behind Confetti Colors — a self-taught painter who found her voice through acrylic on canvas. No formal training, just years of curiosity, play, and a deep love for the way paint moves.
+    </p>
+    <p>
+      My work explores texture, earthy palettes, and the intuitive mark-making that happens when you stop overthinking and just let the brush lead. Every painting begins as an experiment and ends as a feeling.
+    </p>
+    <p>
+      Based in Toronto, creating for walls, hearts, and anyone who believes a home deserves art that breathes.
+    </p>
+    <a href="https://instagram.com/confetticolors.art" target="_blank" class="instagram-badge">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      @confetticolors.art
+    </a>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header">
+    <div>
+      <p class="section-label">Selected Works</p>
+      <h2 class="section-title">The <em>collection</em></h2>
+    </div>
+  </div>
+  <div class="gallery-grid">
+    <!-- Replace all src values with your actual artwork images -->
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=700&q=80" alt="Artwork 1" />
+      <div class="gallery-item-overlay"><span>Untitled I</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?w=700&q=80" alt="Artwork 2" />
+      <div class="gallery-item-overlay"><span>Untitled II</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=700&q=80" alt="Artwork 3" />
+      <div class="gallery-item-overlay"><span>Untitled III</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1578926078693-59507db05b80?w=700&q=80" alt="Artwork 4" />
+      <div class="gallery-item-overlay"><span>Untitled IV</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=700&q=80" alt="Artwork 5" />
+      <div class="gallery-item-overlay"><span>Untitled V</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(this)">
+      <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=700&q=80" alt="Artwork 6" />
+      <div class="gallery-item-overlay"><span>Untitled VI</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PALETTE STRIP -->
+<div class="palette-strip">
+  <p>"I paint the way I feel — intuitively, honestly,<br>and always chasing that one perfect colour."</p>
+  <div class="palette-colors">
+    <div class="palette-dot" style="background:#c17f5a"></div>
+    <div class="palette-dot" style="background:#d4a055"></div>
+    <div class="palette-dot" style="background:#8a9e8a"></div>
+    <div class="palette-dot" style="background:#e8dcc8"></div>
+    <div class="palette-dot" style="background:#6b4c34"></div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <p class="section-label">Behind the Canvas</p>
+  <h2 class="section-title">How a painting<br><em>comes to life</em></h2>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="step-number">01</div>
+      <h3 class="step-title">Intuition First</h3>
+      <p class="step-desc">Every painting starts with a feeling, not a plan. I layer colour instinctively, letting the canvas tell me where to go before my mind can interrupt.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-number">02</div>
+      <h3 class="step-title">Texture & Build</h3>
+      <p class="step-desc">Acrylics let me build up richness — thick impasto marks, translucent glazes, scraped edges. The texture is as much a part of the work as the colour.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-number">03</div>
+      <h3 class="step-title">Finding the Finish</h3>
+      <p class="step-desc">I know a painting is done when it surprises me. When there's nothing left to add and nothing I want to take away. That moment is the whole reason I paint.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="section-label">Get in Touch</p>
+  <h2 class="section-title">Commissions &<br><em>Inquiries</em></h2>
+  <p>Interested in owning an original, commissioning a custom piece, or just want to say hello? I'd love to hear from you.</p>
+  <div class="contact-form">
+    <input type="text" placeholder="Your name" />
+    <input type="email" placeholder="Your email" />
+    <textarea placeholder="Tell me what you have in mind…"></textarea>
+    <button class="btn-send">Send Message</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Confetti Colors · All rights reserved</span>
+  <span>
+    <a href="https://instagram.com/confetticolors.art" target="_blank">@confetticolors.art</a>
+    &nbsp;·&nbsp; Acrylic Paintings · Toronto
+  </span>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close">✕</span>
+  <img id="lightbox-img" src="" alt="" />
+</div>
+
+<script>
+  function openLightbox(el) {
+    const img = el.querySelector('img');
+    document.getElementById('lightbox-img').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeUp 0.7s ease forwards';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.process-step, .gallery-item').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
